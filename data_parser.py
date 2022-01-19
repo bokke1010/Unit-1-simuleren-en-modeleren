@@ -38,7 +38,7 @@ def daterange(start_date, end_date):
         yield start_date + timedelta(n)
 
 def extract_interval(data, start_date: date, end_date: date):
-    return [sum((data[data['Date_of_statistics'] == str(single_date)])['Hospital_admission']) for single_date in daterange(start_date, end_date)]
+    return np.array([sum((data[data['Date_of_statistics'] == str(single_date)])['Hospital_admission']) for single_date in daterange(start_date, end_date)])
 
 
 def plot_hosp(Amsterdam_hosp, Rest_hosp, header):
