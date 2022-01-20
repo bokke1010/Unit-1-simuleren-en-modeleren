@@ -41,15 +41,15 @@ def extract_interval(data, start_date: date, end_date: date):
     return np.array([sum((data[data['Date_of_statistics'] == str(single_date)])['Hospital_admission']) for single_date in daterange(start_date, end_date)])
 
 
-def plot_hosp(Amsterdam_hosp, Rest_hosp, header):
-    days = np.arange(len(Rest_hosp))
+def plot_diff(header, labels, *all_data, axis = ["Days", "People"]):
+    days = np.arange(len(all_data[0]))
     plt.clf()
-    plt.bar(days, Rest_hosp)
-    plt.bar(days, Amsterdam_hosp)
+    for data in all_data:
+        plt.plot(days, data)
     plt.title(header)
-    plt.legend(['Rest of Netherlands', 'Amsterdam'])
-    plt.xlabel("Days")
-    plt.ylabel("Patients")
+    plt.legend(labels)
+    plt.xlabel(axis[0])
+    plt.ylabel(axis[1])
     plt.show()
 
 def compute_average(data, columns):
@@ -70,13 +70,13 @@ if __name__ == "__main__":
 
     hosp_ams = extract_interval(data_ams, date(2020, 2, 27), date(2020, 6, 27))
     hosp_rest = extract_interval(data_rest, date(2020, 2, 27), date(2020, 6, 27))
-    # plot_hosp(hosp_ams, hosp_rest, 'Hospitalizations for Covid19')
-    
+    # plot_diff("Hospitalizations for Covid19", ['Rest of Netherlands', 'Amsterdam'], hosp_ams, hosp_rest)
+
     hosp_ams_comm, hosp_rest_comm = compute_average(hosp_ams, HOSPITALIZATION_TIME), compute_average(hosp_rest, HOSPITALIZATION_TIME)
-    # plot_hosp(hosp_ams_comm, hosp_rest_comm, 'Hospital occupation for Covid19')
-    
+    # plot_diff("Current hospitalizations for Covid19", ['Rest of Netherlands', 'Amsterdam'], hosp_ams_comm, hosp_rest_comm)
+
     inf_ams_comm, inf_rest_comm = hosp_ams_comm / FRACTION_HOSPITALIZED, hosp_rest_comm / FRACTION_HOSPITALIZED
-    plot_hosp(inf_ams_comm, inf_rest_comm, "Infected people for Covid19")
+    plot_diff("Infected people for Covid19", ['Rest of Netherlands', 'Amsterdam'], inf_ams_comm, inf_rest_comm)
     
     # pop_rest = POPULATION_NL - POPULATION_AMS
 
