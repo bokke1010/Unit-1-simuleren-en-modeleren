@@ -27,11 +27,11 @@ def readData():
 
 def filter_region(data, region):
     # Extract the data for security region VR13, Amsterdam. 
-    Data_Amsterdam = data[data['Security_region_code'] == region]
+    Data_Region = data[data['Security_region_code'] == region]
     # Extract the data for the rest of the Netherlands
     Data_rest = data[data['Security_region_code'] != region]
 
-    return Data_Amsterdam, Data_rest
+    return Data_Region, Data_rest
 
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
@@ -70,13 +70,13 @@ if __name__ == "__main__":
 
     hosp_ams = extract_interval(data_ams, date(2020, 2, 27), date(2020, 6, 27))
     hosp_rest = extract_interval(data_rest, date(2020, 2, 27), date(2020, 6, 27))
-    # plot_diff("Hospitalizations for Covid19", ['Rest of Netherlands', 'Amsterdam'], hosp_ams, hosp_rest)
+    # plot_diff("Hospitalizations for Covid19", ['Amsterdam', 'Rest of Netherlands'], hosp_ams, hosp_rest)
 
     hosp_ams_comm, hosp_rest_comm = compute_average(hosp_ams, HOSPITALIZATION_TIME), compute_average(hosp_rest, HOSPITALIZATION_TIME)
-    # plot_diff("Current hospitalizations for Covid19", ['Rest of Netherlands', 'Amsterdam'], hosp_ams_comm, hosp_rest_comm)
+    # plot_diff("Current hospitalizations for Covid19", ['Amsterdam', 'Rest of Netherlands'], hosp_ams_comm, hosp_rest_comm)
 
     inf_ams_comm, inf_rest_comm = hosp_ams_comm / FRACTION_HOSPITALIZED, hosp_rest_comm / FRACTION_HOSPITALIZED
-    plot_diff("Infected people for Covid19", ['Rest of Netherlands', 'Amsterdam'], inf_ams_comm, inf_rest_comm)
+    plot_diff("Infected people for Covid19", ['Amsterdam', 'Rest of Netherlands'], inf_ams_comm, inf_rest_comm)
     
     # pop_rest = POPULATION_NL - POPULATION_AMS
 
